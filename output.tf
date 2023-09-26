@@ -1,4 +1,4 @@
-output "server-ip" {
+/*output "server-ip" {
   value = aws_instance.Primus-server.public_ip
 }
 
@@ -8,4 +8,4 @@ output "vpc_id" {
 
 output "server-arn" {
   value = aws_instance.Primus-server.arn
-}
+}*/

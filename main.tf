@@ -1,6 +1,6 @@
 data "aws_ami" "amzn-linux2" {
-  most_recent      = true
-  owners           = ["amazon"]
+  most_recent = true
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
@@ -17,12 +17,13 @@ data "aws_ami" "amzn-linux2" {
 
 resource "aws_instance" "Primus-server" {
   ami                         = data.aws_ami.amzn-linux2.id
-  instance_type               = var.instanceType # "t2.micro"
-  key_name                    = var.keypair      #"terraform-key"
+  instance_type               = var.instanceType               # "t2.micro"
+  key_name                    = aws_key_pair.test-key.key_name #"terraform-key"
   subnet_id                   = aws_subnet.primus-subnet.id
   vpc_security_group_ids      = [aws_security_group.primus-sg.id]
-  user_data                   = file("shellscript.sh")
+  user_data                   = file(var.userData)
   user_data_replace_on_change = true
+  count = 3
 
   tags = {
     Name = "Primus-server"
@@ -88,14 +89,14 @@ resource "aws_security_group" "primus-sg" {
   description = "Allow http and ssh inbound traffic"
   vpc_id      = aws_vpc.primus-vpc.id
 
-  ingress {
+  /* ingress {
     description = "HTTP from Internet"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     # ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
-  }
+  }*/
 
   ingress {
     description = "SSH from Internet"
@@ -119,4 +120,10 @@ resource "aws_security_group" "primus-sg" {
   }
 }
 
+
+resource "aws_key_pair" "test-key" {
+  key_name   = "test-key"
+  public_key = file(var.keyName)
+
+}
 
