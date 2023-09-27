@@ -1,0 +1,7 @@
+variable "vpcId" {
+
+}
+
+variable "sgName" {
+  
+}
