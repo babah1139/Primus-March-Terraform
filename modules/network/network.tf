@@ -6,20 +6,20 @@ resource "aws_vpc" "primus-vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name = "primus-vpc"
+    Name = "vpc-${var.name}"
   }
 }
 
 
 resource "aws_subnet" "primus-subnet" {
   vpc_id            = aws_vpc.primus-vpc.id
-  cidr_block        = "10.0.1.0/24"
+  cidr_block        = var.sbn-cidr
   availability_zone = var.avZone
 
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "primus-sbn"
+    Name = "${var.name}-sbn"
   }
 }
 
@@ -28,7 +28,7 @@ resource "aws_internet_gateway" "primus-gw" {
   vpc_id = aws_vpc.primus-vpc.id
 
   tags = {
-    Name = "primus-igw"
+    Name = "${var.name}-igw"
   }
 }
 
@@ -42,7 +42,7 @@ resource "aws_route_table" "primus-pub-rt" {
   }
 
   tags = {
-    Name = "primus-pub-rt"
+    Name = "${var.name}-pub-rt"
   }
 }
 

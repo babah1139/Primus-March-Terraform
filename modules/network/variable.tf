@@ -8,3 +8,11 @@ variable "avZone" {
 variable "region" {
   default = "eu-west-3" // create your instances in (e.g., us-west-2)
 }
+
+variable "name" {
+  
+}
+
+variable "sbn-cidr" {
+  
+}
